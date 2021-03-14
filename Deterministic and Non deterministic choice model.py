@@ -82,7 +82,6 @@ def func_marginalise_pVC_previous_over_v(dict_to_be_marginalised: dict) -> dict:
         marginalised_dict[c] = (
             dict_to_be_marginalised[0, c] + dict_to_be_marginalised[1, c]
         )
-
     return marginalised_dict
 
 
@@ -161,8 +160,6 @@ def choose_action_deterministic(prob_dist_c):
         ]
     )
 
-    print("prob_count_sum_of_lower_half with middle", sum_of_lower_half_and_middle)
-    print("prob_count_sum_of_upper_half with middle", sum_of_upper_half_and_middle)
     if sum_of_lower_half_and_middle < sum_of_upper_half_and_middle:
         return Action.A
     elif sum_of_lower_half_and_middle == sum_of_upper_half_and_middle:
@@ -184,7 +181,6 @@ def choose_action_non_deterministic(prob_dist_c):
             for j in range(math.ceil((len(prob_dist_current_c) - 1) / 2))
         ]
     )
-    # print("sum_of_lower_half", prob_count_sum_of_lower_half)
 
     prob_count_sum_of_upper_half = sum(
         [
