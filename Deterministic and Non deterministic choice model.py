@@ -148,7 +148,6 @@ def func_adding_own_signal(
 def choose_action_deterministic(prob_dist_c):
     print("Choosing action for deterministic choice")
     prob_dist_current_c = func_marginalise_pVC_previous_over_v(prob_dist_c)
-    # print("prob_dist_current_c after marginalisation over v", prob_dist_current_c)
     sum_of_lower_half_and_middle = sum(
         [prob_dist_current_c[j] for j in range(math.ceil(len(prob_dist_current_c) / 2))]
     )
@@ -177,10 +176,8 @@ def choose_action_deterministic(prob_dist_c):
 
 
 def choose_action_non_deterministic(prob_dist_c):
-    # print("prob_dist_c ", prob_dist_c)
     # print("Choosing action")
     prob_dist_current_c = func_marginalise_pVC_previous_over_v(prob_dist_c)
-    # print("prob_dist_current_c after marginalisation over v", prob_dist_current_c)
     prob_count_sum_of_lower_half = sum(
         [
             prob_dist_current_c[j]
@@ -198,14 +195,12 @@ def choose_action_non_deterministic(prob_dist_c):
             )
         ]
     )
-    # print("sum_of_upper_half", prob_count_sum_of_upper_half)
 
     def middle_value(dict):
         if len(dict) % 2 != 0:
             middle = dict[math.trunc(len(dict) / 2)]
         else:
             middle = 0
-            # print("middle", middle)
         return middle
 
     choices = choice(
