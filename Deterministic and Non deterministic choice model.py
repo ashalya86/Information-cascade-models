@@ -515,5 +515,9 @@ for k in range(len(list_p)):  # changing the value for p
         plt.legend(loc="upper left")
         plt.title("Signal accuracy p =  " + str(list_p[k]))
     plt.show()
-    dict_count_actions_for_all_ps[p] = diff_lessthan_20_percentage, significantly_more_As, significantly_more_Rs
+    dict_count_actions_for_all_ps[p] = (
+        diff_lessthan_20_percentage,
+        significantly_more_As,
+        significantly_more_Rs,
+    )
 print(dict_count_actions_for_all_ps)
