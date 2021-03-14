@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Nov 11 13:35:03 2020
-Deterministic and Non deterministic model
+Deterministic and Non deterministic choice model
 @author: srias292
 """
 
@@ -216,7 +216,6 @@ def choose_action_non_deterministic(prob_dist_c):
             prob_count_sum_of_upper_half,
         ),
     )
-    # print("choice", choices)
     if choices == "T":
         random_number = random.randrange(2)
         if random_number == 1:
@@ -336,7 +335,6 @@ def simulation(n, p, num_prior_agents, real_v, choice_method):
                         )
                     ]
                 )
-                # print("sum_of_upper_half", sum_of_upper_half)
                 return sum_of_upper_half
 
             def middle_value(dict):
@@ -349,11 +347,8 @@ def simulation(n, p, num_prior_agents, real_v, choice_method):
             def func_pA_given_X_prev_C_deterministic(a, prev_c_dist, x):
                 marginalised_over_v = defaultdict(int)
                 marginalised_over_v = func_marginalise_pVC_previous_over_v(prev_c_dist)
-                # print("marginalised_over_V", marginalised_over_v)
                 pad_righted_array = func_pad_righted_dict(marginalised_over_v)
                 shift_righted_array = func_shift_righted_dict(marginalised_over_v)
-                # print("pad_righted_array", pad_righted_array)
-                # print("shift_righted_array", shift_righted_array)
                 if a == Action.A:
                     sum_upper_half_and_middle = func_sum_upper_half_and_middle(
                         shift_righted_array
@@ -471,11 +466,11 @@ def simulation(n, p, num_prior_agents, real_v, choice_method):
     return actions, signals
 
 
-n = 5
+n = 100
 list_p = [0.5, 0.6, 0.7, 0.8, 0.9]
-runs = 1
+runs = 1000
 real_v = 1
-num_prior_agents = 1
+num_prior_agents = 1 # can be varied
 choice_method = "deterministic"
 true_cascade_list = list()
 false_cascade_list = list()
@@ -490,23 +485,19 @@ for k in range(len(list_p)):  # changing the value for p
     true_cascade_count = 0
     false_cascade_count = 0
     no_cascade_count = 0
-    num1 = 0
-    num2 = 0
-    num3 = 0
+    diff_lessthan_20_percentage = 0
+    significantly_more_As = 0
+    significantly_more_Rs = 0
     for r in range(0, runs):
         actions, signals = simulation(n, p, num_prior_agents, real_v, choice_method)
         print("private signals", signals)
         print("Chosen actions", actions)
         if abs(actions.count(Action.A) - actions.count(Action.R)) < 20:
-            num1 += 1
+            diff_lessthan_20_percentage += 1
         elif actions.count(Action.A) - actions.count(Action.R) >= 20:
-            num2 += 1
+            significantly_more_As += 1
         elif actions.count(Action.R) - actions.count(Action.A) >= 20:
-            num3 += 1
-        true_cascade_count, false_cascade_count, no_cascade_count = count_cascades(
-            actions, true_cascade_count, false_cascade_count, no_cascade_count
-        )
-        print(true_cascade_count, false_cascade_count, no_cascade_count)
+            significantly_more_Rs += 1
         a_cum_freq = cumfreq(
             [i for i, a in enumerate(actions) if a == Action.A],
             numbins=n,
@@ -523,8 +514,6 @@ for k in range(len(list_p)):  # changing the value for p
         plt.ylabel("Number of adoptions/rejections")
         plt.legend(loc="upper left")
         plt.title("Signal accuracy p =  " + str(list_p[k]))
-        # print(true_cascade_count, false_cascade_count, no_cascade_count)
     plt.show()
-    dict_count_actions_for_all_ps[p] = num1, num2, num3
+    dict_count_actions_for_all_ps[p] = diff_lessthan_20_percentage, significantly_more_As, significantly_more_Rs
 print(dict_count_actions_for_all_ps)
-print(num1, num2, num3)
