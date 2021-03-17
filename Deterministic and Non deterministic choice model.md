@@ -70,7 +70,7 @@ def prior_data(num_prior_agents, p):
 
 ```
 
-creating normal distribution for num_prior agents
+creating normal distribution for prior agents
 
 ```python
     for c in range(num_prior_agents + 1):
@@ -106,7 +106,7 @@ def func_marginalise_pVC_previous_over_c(dict_to_be_marginalised: dict) -> dict:
 
 ```
 
-Function adding own signal
+Adding own signal
 ```python
 def func_adding_own_signal(
     pVC_previous: list, agent_index: int, x: Signal, p: int
